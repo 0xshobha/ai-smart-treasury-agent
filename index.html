@@ -11,7 +11,10 @@
     <div class="dashboard">
         <header>
             <h1>💰 AI Smart Treasury Agent</h1>
-            <div class="status-badge" id="agent-status">● AUTONOMOUS: ACTIVE</div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button id="connect-btn" onclick="connectWallet()" style="background: rgba(99, 102, 241, 0.1); border: 1px solid var(--accent-color); color: var(--accent-color);">🔌 Connect Wallet</button>
+                <div class="status-badge" id="agent-status" style="display: none;">● AUTONOMOUS: ACTIVE</div>
+            </div>
         </header>
 
         <div class="grid">
@@ -51,10 +54,12 @@
             </div>
         </div>
 
-        <div class="actions" style="margin-bottom: 2rem; display: flex; gap: 1rem;">
-            <button onclick="toggleMode()">Switch to Aggressive</button>
-            <button style="background: var(--danger);" onclick="emergencyExit()">Emergency Rebalance (USDT)</button>
+        <div class="actions" style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button onclick="toggleMode()">🔄 Switch Mode (Safe/Aggressive)</button>
+            <button style="background: var(--danger);" onclick="emergencyExit()">🆘 Emergency Rebalance (USDT)</button>
         </div>
+        
+        <div id="toast-container"></div>
 
         <h3>Agent Activity Logs</h3>
         <div class="logs" id="log-container">
@@ -68,25 +73,57 @@
 
     <script>
         let mode = "Safe";
+        let connected = false;
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if(type === 'error') toast.style.borderLeftColor = 'var(--danger)';
+            if(type === 'success') toast.style.borderLeftColor = 'var(--success)';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        function connectWallet() {
+            if (connected) return;
+            showToast("Connecting to Tether WDK Wallet...", "info");
+            setTimeout(() => {
+                connected = true;
+                document.getElementById('connect-btn').innerText = "✅ Wallet Connected";
+                document.getElementById('agent-status').style.display = "block";
+                showToast("Wallet Connected: 0x5a2...f3b", "success");
+            }, 1500);
+        }
         
         function toggleMode() {
+            if (!connected) {
+                showToast("Please connect wallet first!", "error");
+                return;
+            }
             mode = (mode === "Safe") ? "Aggressive" : "Safe";
             document.getElementById('mode-val').innerText = (mode === "Safe") ? "🛡️ SAFE" : "🔥 AGGRESSIVE";
             const newLog = document.createElement('div');
             newLog.className = 'log-entry action';
             newLog.innerHTML = `<span class="time">[${new Date().toLocaleTimeString()}]</span> MODE CHANGED: Agent now operating in ${mode.toUpperCase()} mode.`;
             document.getElementById('log-container').appendChild(newLog);
-            alert(`Switching agent to ${mode} Mode... Decision threshold updated.`);
+            showToast(`Agent switched to ${mode} Mode.`, "info");
         }
 
         function emergencyExit() {
-            alert("EMERGENCY EXIT triggered. Rebalancing all assets to USDT via Tether WDK...");
+            if (!connected) {
+                showToast("Please connect wallet first!", "error");
+                return;
+            }
+            showToast("Emergency Rebalance triggered!", "error");
             const log = document.getElementById('log-container');
             log.innerHTML += `<div class="log-entry action" style="color: var(--danger);"><span class="time">[${new Date().toLocaleTimeString()}]</span> EMERGENCY: Liquidating positions into stablecoins...</div>`;
         }
 
         // Advanced Autonomous Simulation
         setInterval(() => {
+            if (!connected) return;
             const logs = document.getElementById('log-container');
             const totalVal = document.getElementById('total-val');
             const riskDisplay = document.getElementById('risk-display');
