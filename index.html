@@ -17,19 +17,37 @@
         <div class="grid">
             <div class="card">
                 <h3>Total Treasury</h3>
-                <div class="value">$124,560.00</div>
+                <div class="value" id="total-val">$124,560.00</div>
             </div>
             <div class="card">
                 <h3>Risk Score</h3>
-                <div class="value" id="risk-display">18 / 100</div>
+                <div class="value" id="risk-display" style="color: var(--success);">18 / 100</div>
             </div>
             <div class="card">
-                <h3>Mode</h3>
-                <div class="value">SAFE</div>
+                <h3>Treasury Mode</h3>
+                <div class="value" id="mode-val">🛡️ SAFE</div>
             </div>
             <div class="card">
-                <h3>Active Chain</h3>
-                <div class="value">Multi-Chain (WDK)</div>
+                <h3>XAUT Allocation</h3>
+                <div class="value" id="xaut-val">12%</div>
+            </div>
+        </div>
+
+        <div class="treasury-breakdown" style="margin-bottom: 3rem;">
+            <div class="card" style="text-align: left;">
+                <h3 style="margin-bottom: 1.5rem;">📊 Autonomous Allocation Breakdown</h3>
+                <div style="display: flex; gap: 10px; height: 30px; border-radius: 15px; overflow: hidden; background: #08080a;">
+                    <div style="width: 60%; background: var(--accent-color);" title="USDT"></div>
+                    <div style="width: 15%; background: var(--warning);" title="XAUT"></div>
+                    <div style="width: 15%; background: #a855f7;" title="ETH"></div>
+                    <div style="width: 10%; background: var(--success);" title="Lending APY Pool"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
+                    <span>USDT (60%)</span>
+                    <span>XAUT (15%)</span>
+                    <span>ETH (15%)</span>
+                    <span>Yield (10%)</span>
+                </div>
             </div>
         </div>
 
@@ -49,24 +67,55 @@
     </div>
 
     <script>
+        let mode = "Safe";
+        
         function toggleMode() {
-            alert("Switching agent to Aggressive Mode... Decision threshold changed to 70%.");
+            mode = (mode === "Safe") ? "Aggressive" : "Safe";
+            document.getElementById('mode-val').innerText = (mode === "Safe") ? "🛡️ SAFE" : "🔥 AGGRESSIVE";
+            const newLog = document.createElement('div');
+            newLog.className = 'log-entry action';
+            newLog.innerHTML = `<span class="time">[${new Date().toLocaleTimeString()}]</span> MODE CHANGED: Agent now operating in ${mode.toUpperCase()} mode.`;
+            document.getElementById('log-container').appendChild(newLog);
+            alert(`Switching agent to ${mode} Mode... Decision threshold updated.`);
         }
 
         function emergencyExit() {
             alert("EMERGENCY EXIT triggered. Rebalancing all assets to USDT via Tether WDK...");
+            const log = document.getElementById('log-container');
+            log.innerHTML += `<div class="log-entry action" style="color: var(--danger);"><span class="time">[${new Date().toLocaleTimeString()}]</span> EMERGENCY: Liquidating positions into stablecoins...</div>`;
         }
 
-        // Simulating log scrolling and risk updates
+        // Advanced Autonomous Simulation
         setInterval(() => {
             const logs = document.getElementById('log-container');
+            const totalVal = document.getElementById('total-val');
+            const riskDisplay = document.getElementById('risk-display');
+            
+            // Random value fluctuation
+            const currentVal = parseFloat(totalVal.innerText.replace('$', '').replace(',', ''));
+            const newVal = currentVal + (Math.random() - 0.4) * 50;
+            totalVal.innerText = '$' + newVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+            // Random risk fluctuation
+            const baseRisk = (mode === "Safe") ? 15 : 45;
+            const newRisk = Math.floor(baseRisk + Math.random() * 20);
+            riskDisplay.innerText = `${newRisk} / 100`;
+            riskDisplay.style.color = newRisk > 60 ? 'var(--danger)' : (newRisk > 30 ? 'var(--warning)' : 'var(--success)');
+
             const newLog = document.createElement('div');
             newLog.className = 'log-entry';
             const time = new Date().toLocaleTimeString();
-            newLog.innerHTML = `<span class="time">[${time}]</span> Agent monitoring market: No action required.`;
+            
+            if (newRisk > 50 && mode === "Safe") {
+                newLog.classList.add('action');
+                newLog.innerHTML = `<span class="time">[${time}]</span> RISK SPIKE: Moving 10% liquidity to USDT Vault.`;
+            } else {
+                newLog.innerHTML = `<span class="time">[${time}]</span> 🛡️ Agent monitoring: Treasury health optimal.`;
+            }
+            
             logs.appendChild(newLog);
             logs.scrollTop = logs.scrollHeight;
-        }, 15000);
+        }, 8000);
     </script>
 </body>
 </html>
