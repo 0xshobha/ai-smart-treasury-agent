@@ -1,5 +1,5 @@
 {
-  "name": "ai-smart-treasury-agent",
+  "name": "tether-galactica-agent",
   "version": "1.0.0",
   "description": "Autonomous AI agent for crypto treasury management using Tether WDK and OpenClaw.",
   "main": "agent/index.ts",
