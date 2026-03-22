@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Smart Treasury Agent | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>💰 AI Smart Treasury Agent</h1>
+            <div class="status-badge" id="agent-status">● AUTONOMOUS: ACTIVE</div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Total Treasury</h3>
+                <div class="value">$124,560.00</div>
+            </div>
+            <div class="card">
+                <h3>Risk Score</h3>
+                <div class="value" id="risk-display">18 / 100</div>
+            </div>
+            <div class="card">
+                <h3>Mode</h3>
+                <div class="value">SAFE</div>
+            </div>
+            <div class="card">
+                <h3>Active Chain</h3>
+                <div class="value">Multi-Chain (WDK)</div>
+            </div>
+        </div>
+
+        <div class="actions" style="margin-bottom: 2rem; display: flex; gap: 1rem;">
+            <button onclick="toggleMode()">Switch to Aggressive</button>
+            <button style="background: var(--danger);" onclick="emergencyExit()">Emergency Rebalance (USDT)</button>
+        </div>
+
+        <h3>Agent Activity Logs</h3>
+        <div class="logs" id="log-container">
+            <div class="log-entry"><span class="time">[12:35:01]</span> Fetching market data for USDT, XAUT, ETH...</div>
+            <div class="log-entry"><span class="time">[12:35:02]</span> Analyzing sentiment: "Market volatility in ETH high."</div>
+            <div class="log-entry action"><span class="time">[12:35:05]</span> AI Recommendation: REALLOCATE 5% to XAUT (Tether Gold).</div>
+            <div class="log-entry"><span class="time">[12:35:07]</span> Tether WDK: Executing cross-chain rebalance...</div>
+            <div class="log-entry"><span class="time">[12:35:10]</span> Transaction Confirmed: 0x5a2...f3b</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMode() {
+            alert("Switching agent to Aggressive Mode... Decision threshold changed to 70%.");
+        }
+
+        function emergencyExit() {
+            alert("EMERGENCY EXIT triggered. Rebalancing all assets to USDT via Tether WDK...");
+        }
+
+        // Simulating log scrolling and risk updates
+        setInterval(() => {
+            const logs = document.getElementById('log-container');
+            const newLog = document.createElement('div');
+            newLog.className = 'log-entry';
+            const time = new Date().toLocaleTimeString();
+            newLog.innerHTML = `<span class="time">[${time}]</span> Agent monitoring market: No action required.`;
+            logs.appendChild(newLog);
+            logs.scrollTop = logs.scrollHeight;
+        }, 15000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+:root {
+  --bg-color: #0d0d12;
+  --card-bg: #1a1a24;
+  --accent-color: #6366f1;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --clay-shadow: 8px 8px 16px #08080a, -8px -8px 16px #12121e;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.dashboard {
+  width: 90%;
+  max-width: 1000px;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 30px;
+  box-shadow: var(--clay-shadow);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #6366f1, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.status-badge {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--success);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: inset 4px 4px 8px #08080a, inset -4px -4px 8px #12121e;
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.card .value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.logs {
+  background: #08080a;
+  padding: 1rem;
+  border-radius: 15px;
+  height: 200px;
+  overflow-y: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  border: 1px solid #1e1e2d;
+}
+
+.log-entry {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.log-entry .time {
+  color: var(--accent-color);
+  margin-right: 0.5rem;
+}
+
+.log-entry.action {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+button {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 4px 4px 8px #08080a, -4px -4px 8px #12121e;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 12px #08080a, -6px -6px 12px #12121e;
+}
+
+button:active {
+  transform: translateY(0);
+}
